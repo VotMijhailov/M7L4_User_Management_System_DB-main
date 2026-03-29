@@ -38,9 +38,29 @@ def test_add_new_user(setup_database, connection):
 
 # Возможные варианты тестов:
 """
-Тест добавления пользователя с существующим логином.
-Тест успешной аутентификации пользователя.
-Тест аутентификации несуществующего пользователя.
 Тест аутентификации пользователя с неправильным паролем.
 Тест отображения списка пользователей.
 """
+
+# Тест добавления пользователя с существующим логином.
+def test_add_users(setup_database, connection):
+    add_user("testuser2", "testuser@example.ry", 'password123')
+    result = add_user("testuser2", "testuser@example.ry", 'pass123')
+    assert result == False
+
+# Тест успешной аутентификации пользователя.
+def test_authenticate_user(setup_database, connection):
+    add_user("testuser2", "testuser@example.ry", 'password123')
+    result1 = authenticate_user("testuser2", 'pass123')
+    assert result1 == False
+
+# Тест аутентификации несуществующего пользователя.
+def test_NOT_authenticated_user(setup_database, connection):
+    result2 = authenticate_user("testuser2", 'pass123')
+    assert result2 == False
+
+# Тест аутентификации пользователя с неправильным паролем.
+def test_authenticated_user_with_NOT_incorrect_password(setup_database, connection):
+    add_user("testuser2", "testuser@example.ry", 'password123')
+    result3 = authenticate_user("testuser2", 'pass123')
+    assert result3 == False
